@@ -36,7 +36,7 @@ jobs:
     # - name: Tag the Docker image
     - run: docker tag sarv_bulk_sms_service:latest sarv_bulk_sms_service:1.0
     # - name: Push the Docker image to the registry
-    - run: docker push ghcr.io/rakesh8503/docker/sarv_bulk_sms_service:1.0
+    - run: docker push rakesh8503/docker
 # jobs:
 #   build:
 
