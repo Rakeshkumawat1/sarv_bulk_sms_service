@@ -9,37 +9,36 @@ on:
   pull_request:
     branches: [ main ]
 
-    jobs:
-  build-and-publish:
-    name: build and publish
+jobs:
+  build:
+
     runs-on: self-hosted
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
     steps:
-      - uses: actions/checkout@v2
-      - name: npm install
-        uses: actions/npm@v2
-        with:
-          args: install
-      - name: npm test
-        uses: actions/npm@v2
-        with:
-          args: run test
-      - name: npm lint
-        uses: actions/npm@v2
-        with:
-          args: run lint
-      - name: docker build
-        uses: actions/docker/cli@v2
-        with:
-          args: build -t Rakeshkumawat1/sarv_bulk_sms_service .
-      - name: docker login
-        uses: actions/docker/login@v2
-        env:
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      - name: docker push
-        uses: actions/docker/cli@v2
-        with:
-          args: push Rakeshkumawat1/sarv_bulk_sms_service
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm i
+    # - run: npm run build --if-present
+    - run: npm test
+    - run: npm lint
+    - run: build -t Rakeshkumawat1/sarv_bulk_sms_service .
+    - name: docker login
+      uses: actions/docker/login@v2
+      env:
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+    - name: docker push
+      uses: actions/docker/cli@v2
+      with:
+        args: push Rakeshkumawat1/sarv_bulk_sms_service
 # jobs:
 #   build:
 
