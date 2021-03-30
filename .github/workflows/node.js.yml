@@ -31,12 +31,12 @@ jobs:
     - run: npm lint
     - run: build -t Rakeshkumawat1/sarv_bulk_sms_service .
     - name: docker login
-      uses: actions/docker/login@v2
+      uses: actions/docker/login@main
       env:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
     - name: docker push
-      uses: actions/docker/cli@v2
+      uses: actions/docker/cli@main
       with:
         args: push Rakeshkumawat1/sarv_bulk_sms_service
 # jobs:
